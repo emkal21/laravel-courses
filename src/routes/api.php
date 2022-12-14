@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\CoursesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/courses', [CoursesController::class, 'index']);
+Route::get('/courses/{id}', [CoursesController::class, 'retrieve']);
+Route::post('/courses', [CoursesController::class, 'create']);
+Route::put('/courses/{id}', [CoursesController::class, 'update']);
+Route::delete('/courses/{id}', [CoursesController::class, 'delete']);
