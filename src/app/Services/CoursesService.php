@@ -32,4 +32,31 @@ class CoursesService
     {
         return $this->courseRepository->findById($id);
     }
+
+    /**
+     * @param Course $course
+     * @return Course
+     */
+    public function save(Course $course): Course
+    {
+        return $this->courseRepository->save($course);
+    }
+
+    /**
+     * @param Course $course
+     * @return void
+     */
+    public function delete(Course $course): void
+    {
+        $this->courseRepository->delete($course);
+    }
+
+    /**
+     * @param Course $course
+     * @return void
+     */
+    public function softDelete(Course $course): void
+    {
+        $this->courseRepository->softDelete($course);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -49,7 +50,7 @@ abstract class DoctrineRepository implements DoctrineRepositoryInterface
      */
     public function paginate(int $itemsPerPage, int $page): array
     {
-        $page = max(0, $page);
+        $page = max(1, $page);
 
         $itemsPerPage = max(1, $itemsPerPage);
         $itemsPerPage = min(100, $itemsPerPage);
@@ -82,6 +83,39 @@ abstract class DoctrineRepository implements DoctrineRepositoryInterface
         return $queryBuilder
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param T $entity
+     * @return T
+     */
+    public function save($entity)
+    {
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+
+        return $entity;
+    }
+
+    /**
+     * @param T $entity
+     * @return void
+     */
+    public function delete($entity): void
+    {
+        $this->entityManager->remove($entity);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param T $entity
+     * @return void
+     */
+    public function softDelete($entity): void
+    {
+        $entity->setDeletedAt(new DateTime());
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
     }
 
     /**

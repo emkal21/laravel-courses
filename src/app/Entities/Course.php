@@ -2,14 +2,18 @@
 
 namespace App\Entities;
 
+use App\Enums\CourseStatus;
 use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\Table;
 
 #[Entity]
+#[HasLifecycleCallbacks]
 #[Table(name: 'courses')]
 class Course
 {
@@ -24,8 +28,8 @@ class Course
     #[Column(type: 'text', nullable: true)]
     private string|null $description = null;
 
-    #[Column(type: 'string', nullable: true)]
-    private string|null $status = null;
+    #[Column(type: 'string', nullable: true, enumType: CourseStatus::class)]
+    private CourseStatus|null $status = null;
 
     #[Column(type: 'boolean')]
     private bool $isPremium = false;
@@ -39,14 +43,14 @@ class Course
     /**
      * @param string|null $title
      * @param string|null $description
-     * @param string|null $status
+     * @param CourseStatus|null $status
      * @param bool $isPremium
      */
     public function __construct(
-        ?string $title = null,
-        ?string $description = null,
-        ?string $status = null,
-        bool    $isPremium = false
+        ?string       $title = null,
+        ?string       $description = null,
+        ?CourseStatus $status = null,
+        bool          $isPremium = false
     )
     {
         $this->title = $title;
@@ -96,17 +100,17 @@ class Course
     }
 
     /**
-     * @return string|null
+     * @return CourseStatus|null
      */
-    public function getStatus(): ?string
+    public function getStatus(): ?CourseStatus
     {
         return $this->status;
     }
 
     /**
-     * @param string|null $status
+     * @param CourseStatus|null $status
      */
-    public function setStatus(?string $status): void
+    public function setStatus(?CourseStatus $status): void
     {
         $this->status = $status;
     }
@@ -136,14 +140,6 @@ class Course
     }
 
     /**
-     * @param DateTime|null $createdAt
-     */
-    public function setCreatedAt(?DateTime $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
      * @return DateTime|null
      */
     public function getDeletedAt(): ?DateTime
@@ -154,8 +150,17 @@ class Course
     /**
      * @param DateTime|null $deletedAt
      */
-    public function setDeletedAt(?DateTime $deletedAt): void
+    public function setDeletedAt(DateTime|null $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
+    }
+
+    /**
+     * @return void
+     */
+    #[PrePersist]
+    public function beforePersist(): void
+    {
+        $this->createdAt = new DateTime();
     }
 }

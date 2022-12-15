@@ -22,4 +22,22 @@ interface DoctrineRepositoryInterface
      * @return T|null
      */
     public function findById(int $id);
+
+    /**
+     * @param T $entity
+     * @return T
+     */
+    public function save($entity);
+
+    /**
+     * @param T $entity
+     * @return void
+     */
+    public function delete($entity): void;
+
+    /**
+     * @param T $entity
+     * @return void
+     */
+    public function softDelete($entity): void;
 }
