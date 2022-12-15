@@ -2,43 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\CourseRepositoryInterface;
+use App\Exceptions\InvalidTransformerInResponseException;
 use App\Responses\CourseResponse;
+use App\Responses\CoursesResponse;
 use App\Responses\EntityNotFoundResponse;
+use App\Services\CoursesService;
 use Illuminate\Http\JsonResponse;
 
 class CoursesController extends Controller
 {
-    private CourseRepositoryInterface $courseRepository;
+    private CoursesService $coursesService;
 
-    public function __construct(CourseRepositoryInterface $courseRepository)
+    /**
+     * @param CoursesService $coursesService
+     */
+    public function __construct(CoursesService $coursesService)
     {
-        $this->courseRepository = $courseRepository;
+        $this->coursesService = $coursesService;
     }
 
+    /**
+     * @return JsonResponse
+     * @throws InvalidTransformerInResponseException
+     */
     public function index(): JsonResponse
     {
-        $page = 0;
-        $itemsPerPage = 100;
+        $page = 1;
+        $itemsPerPage = 5;
 
-        $courses = $this->courseRepository->paginate($itemsPerPage, $page);
+        $courses = $this->coursesService->paginate($itemsPerPage, $page);
 
-        $payload = CourseResponse::many($courses);
+        $response = new CoursesResponse($courses);
 
-        return response()->json($payload);
+        return $response->send();
     }
 
-    public function retrieve($id): JsonResponse
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws InvalidTransformerInResponseException
+     */
+    public function retrieve(string $id): JsonResponse
     {
-        $course = $this->courseRepository->findById($id);
+        $id = intval($id);
+
+        $course = $this->coursesService->findById($id);
 
         if (is_null($course)) {
-            $payload = EntityNotFoundResponse::make();
+            $response = new EntityNotFoundResponse();
         } else {
-            $payload = CourseResponse::one($course);
+            $response = new CourseResponse($course);
         }
 
-        return response()->json($payload);
+        return $response->send();
     }
 
     public function create()

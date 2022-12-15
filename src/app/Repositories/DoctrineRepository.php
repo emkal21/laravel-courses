@@ -1,17 +1,33 @@
 <?php
 
-namespace App\Repositories\Doctrine;
+namespace App\Repositories;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectRepository;
 
-abstract class AbstractRepository
+/**
+ * @template T
+ * @implements DoctrineRepositoryInterface<T>
+ */
+abstract class DoctrineRepository implements DoctrineRepositoryInterface
 {
     protected EntityManagerInterface $entityManager;
+    protected ObjectRepository $repository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $registry)
     {
+        /** @var class-string<T> $entityClass */
+        $entityClass = $this->getEntityClass();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $registry->getManagerForClass($entityClass);
+
+        $repository = $entityManager->getRepository($entityClass);
+
         $this->entityManager = $entityManager;
+        $this->repository = $repository;
     }
 
     /**
@@ -21,9 +37,9 @@ abstract class AbstractRepository
     {
         $queryBuilder = $this->getQueryBuilderForEntity();
 
-        $query = $queryBuilder->getQuery();
-
-        return $query->getResult();
+        return $queryBuilder
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -46,9 +62,9 @@ abstract class AbstractRepository
             ->setFirstResult($offset)
             ->setMaxResults($itemsPerPage);
 
-        $query = $queryBuilder->getQuery();
-
-        return $query->getResult();
+        return $queryBuilder
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -60,11 +76,12 @@ abstract class AbstractRepository
         $queryBuilder = $this
             ->getQueryBuilderForEntity()
             ->andWhere('entity.id = :id')
+            ->setMaxResults(1)
             ->setParameter('id', $id);
 
-        $query = $queryBuilder->getQuery();
-
-        return $query->getResult();
+        return $queryBuilder
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -72,11 +89,14 @@ abstract class AbstractRepository
      */
     private function getQueryBuilderForEntity(): QueryBuilder
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-
-        return $queryBuilder
-            ->select('entity')
-            ->from($this->entity, 'entity')
+        return $this
+            ->repository
+            ->createQueryBuilder('entity')
             ->where('entity.deletedAt is null');
     }
+
+    /**
+     * @return class-string<T>
+     */
+    abstract protected function getEntityClass(): string;
 }

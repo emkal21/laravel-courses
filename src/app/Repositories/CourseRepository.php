@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Repositories\Doctrine;
+namespace App\Repositories;
 
 use App\Entities\Course;
-use App\Repositories\CourseRepositoryInterface;
 
-class CourseRepository extends AbstractRepository implements CourseRepositoryInterface
+class CourseRepository extends DoctrineRepository implements CourseRepositoryInterface
 {
     protected string $entity = Course::class;
 
@@ -15,6 +14,7 @@ class CourseRepository extends AbstractRepository implements CourseRepositoryInt
      */
     public function findById(int $id): ?Course
     {
+        /* @var Course[] $results */
         $results = $this->getById($id);
 
         if (count($results) === 0) {
@@ -22,5 +22,13 @@ class CourseRepository extends AbstractRepository implements CourseRepositoryInt
         }
 
         return $results[0];
+    }
+
+    /**
+     * @return class-string<Course>
+     */
+    protected function getEntityClass(): string
+    {
+        return Course::class;
     }
 }

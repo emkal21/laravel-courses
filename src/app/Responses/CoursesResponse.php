@@ -5,7 +5,7 @@ namespace App\Responses;
 use App\Transformers\CourseTransformer;
 use App\Transformers\TransformerInterface;
 
-class CourseResponse extends EntityResponse
+class CoursesResponse extends EntitiesResponse
 {
     /**
      * @return class-string<TransformerInterface>

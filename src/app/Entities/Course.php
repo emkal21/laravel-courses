@@ -2,7 +2,6 @@
 
 namespace App\Entities;
 
-use App\Enums\CourseStatus;
 use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -12,7 +11,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Entity]
 #[Table(name: 'courses')]
-class Course implements EntityInterface
+class Course
 {
     #[Id]
     #[GeneratedValue]
@@ -26,7 +25,7 @@ class Course implements EntityInterface
     private string|null $description = null;
 
     #[Column(type: 'string', nullable: true)]
-    private CourseStatus|null $status = null;
+    private string|null $status = null;
 
     #[Column(type: 'boolean')]
     private bool $isPremium = false;
@@ -97,17 +96,17 @@ class Course implements EntityInterface
     }
 
     /**
-     * @return CourseStatus|null
+     * @return string|null
      */
-    public function getStatus(): ?CourseStatus
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
     /**
-     * @param CourseStatus|null $status
+     * @param string|null $status
      */
-    public function setStatus(?CourseStatus $status): void
+    public function setStatus(?string $status): void
     {
         $this->status = $status;
     }

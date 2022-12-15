@@ -2,17 +2,17 @@
 
 namespace App\Responses;
 
-class EntityNotFoundResponse
+class EntityNotFoundResponse extends ErrorResponse
 {
+    protected int $httpStatus = 404;
+
+    protected string $message;
+
     /**
-     * @return array
+     * @param string $message
      */
-    public static function make(): array
+    public function __construct(string $message = 'Entity not found.')
     {
-        return [
-            'error' => [
-                'message' => 'Entity not found.',
-            ],
-        ];
+        parent::__construct([$message]);
     }
 }

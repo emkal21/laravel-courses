@@ -3,16 +3,18 @@
 namespace App\Transformers;
 
 use App\Entities\Course;
-use App\Entities\EntityInterface;
 use App\Formatters\DateTimeFormatter;
 
-class CourseTransformer extends AbstractTransformer
+/**
+ * @implements TransformerInterface<Course>
+ */
+class CourseTransformer implements TransformerInterface
 {
     /**
-     * @param Course|EntityInterface $entity
+     * @param Course $entity
      * @return array
      */
-    public static function transform(Course|EntityInterface $entity): array
+    public static function transform($entity): array
     {
         return [
             'id' => $entity->getId(),
