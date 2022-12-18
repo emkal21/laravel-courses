@@ -49,6 +49,12 @@ application key, and create the database schema:
     php artisan key:generate
     php artisan doctrine:schema:create
 
-The API should now be ready. Once you are done using it, bring down the containers like this:
+In order to build the frontend (Swagger UI), run the following command:
+
+    npm run build
+
+Swagger UI will now be accessible at [http://localhost:8080](http://localhost:8080).
+
+Once you are done using the API, bring down the containers like this:
 
     docker compose down

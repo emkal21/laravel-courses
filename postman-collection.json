@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "799fa435-9aa6-407d-b468-9c18ee49279f",
+		"name": "laravel-courses",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "577589"
+	},
+	"item": [
+		{
+			"name": "/courses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/courses?page=1&items_per_page=10",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"courses"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "items_per_page",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/courses",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Test title\",\n    \"description\": \"Test description\",\n    \"status\": \"Published\",\n    \"is_premium\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/courses",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"courses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/courses/{id}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Edited title\",\n    \"description\": \"Edited description\",\n    \"status\": \"Pending\",\n    \"is_premium\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/courses/1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"courses",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/courses/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/courses/1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"courses",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/courses/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/courses/1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"courses",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		}
+	]
+}

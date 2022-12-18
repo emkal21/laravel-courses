@@ -2,8 +2,11 @@ ARG PHP_VERSION
 
 FROM php:${PHP_VERSION}-apache
 
-# Set current working directory
-WORKDIR /var/www/html
+# Execute as bash
+SHELL ["/bin/bash", "-c"]
+
+# Set current working directory to home directory
+WORKDIR /root
 
 # Install additional packages and PHP extensions
 RUN apt update \
@@ -21,3 +24,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Enable Apache2 mod_rewrite
 RUN a2enmod rewrite
 RUN service apache2 restart
+
+# Install nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+
+# Install latest version of node.js
+RUN bash -i -c 'nvm install node'
+
+# Set current working directory to the document root
+WORKDIR /var/www/html
