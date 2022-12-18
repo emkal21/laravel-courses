@@ -9,9 +9,5 @@ use App\Entities\Course;
  */
 interface CourseRepositoryInterface extends DoctrineRepositoryInterface
 {
-    /**
-     * @param int $id
-     * @return Course|null
-     */
-    public function findById(int $id): ?Course;
+
 }

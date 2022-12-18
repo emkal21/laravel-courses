@@ -70,9 +70,9 @@ abstract class DoctrineRepository implements DoctrineRepositoryInterface
 
     /**
      * @param int $id
-     * @return array
+     * @return T|null
      */
-    public function getById(int $id): array
+    public function findById(int $id)
     {
         $queryBuilder = $this
             ->getQueryBuilderForEntity()
@@ -80,9 +80,16 @@ abstract class DoctrineRepository implements DoctrineRepositoryInterface
             ->setMaxResults(1)
             ->setParameter('id', $id);
 
-        return $queryBuilder
+        $results = $queryBuilder
             ->getQuery()
             ->getResult();
+
+        if (count($results) === 0) {
+            return null;
+        }
+
+        return $results[0];
+
     }
 
     /**

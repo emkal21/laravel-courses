@@ -48,9 +48,7 @@ class CoursesController extends Controller
 
         $courses = $this->coursesService->paginate($itemsPerPage, $page);
 
-        $response = new CoursesResponse($courses);
-
-        return $response->send();
+        return (new CoursesResponse($courses))->send();
     }
 
     /**
@@ -65,12 +63,10 @@ class CoursesController extends Controller
         $course = $this->coursesService->findById($id);
 
         if (is_null($course)) {
-            $response = new EntityNotFoundResponse();
-        } else {
-            $response = new CourseResponse($course);
+            return (new EntityNotFoundResponse())->send();
         }
 
-        return $response->send();
+        return (new CourseResponse($course))->send();
     }
 
     /**
@@ -143,13 +139,11 @@ class CoursesController extends Controller
         $course = $this->coursesService->findById($id);
 
         if (is_null($course)) {
-            $response = new EntityNotFoundResponse();
-        } else {
-            $this->coursesService->softDelete($course);
-
-            $response = new NoContentResponse();
+            return (new EntityNotFoundResponse())->send();
         }
 
-        return $response->send();
+        $this->coursesService->softDelete($course);
+
+        return (new NoContentResponse())->send();
     }
 }

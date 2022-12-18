@@ -23,16 +23,16 @@ class Course
     private int|null $id = null;
 
     #[Column(type: 'string', nullable: true)]
-    private string|null $title = null;
+    private string|null $title;
 
     #[Column(type: 'text', nullable: true)]
-    private string|null $description = null;
+    private string|null $description;
 
     #[Column(type: 'string', nullable: true, enumType: CourseStatus::class)]
-    private CourseStatus|null $status = null;
+    private CourseStatus|null $status;
 
     #[Column(type: 'boolean')]
-    private bool $isPremium = false;
+    private bool $isPremium;
 
     #[Column(type: 'datetime', nullable: true)]
     private DateTime|null $createdAt = null;
