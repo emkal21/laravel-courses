@@ -40,4 +40,9 @@ interface DoctrineRepositoryInterface
      * @return void
      */
     public function softDelete($entity): void;
+
+    /**
+     * @return void
+     */
+    public function truncate(): void;
 }

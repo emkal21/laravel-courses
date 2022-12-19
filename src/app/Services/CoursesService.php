@@ -59,4 +59,12 @@ class CoursesService
     {
         $this->courseRepository->softDelete($course);
     }
+
+    /**
+     * @return void
+     */
+    public function truncate(): void
+    {
+        $this->courseRepository->truncate();
+    }
 }

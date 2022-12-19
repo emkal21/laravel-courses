@@ -49,6 +49,10 @@ application key, and create the database schema:
     php artisan key:generate
     php artisan doctrine:schema:create
 
+In order to run the tests, run the following command:
+
+    php artisan test
+
 In order to build the frontend (Swagger UI), run the following command:
 
     npm run build
